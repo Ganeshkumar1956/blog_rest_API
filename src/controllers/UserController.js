@@ -36,15 +36,7 @@ export const register=async (req,res)=>{
         if(data.password){
             await user.setPassword(data.password);
         }
-        await user.validate();
-        if(req.files && req.files.profilePic){
-            user.profileImg=await profileImgUpload(req.files.profilePic);
-        }else{
-            return res.status(400).send({
-                message:"ValidationError",
-                error:"Profile Picture is required"
-            });
-        }     
+        await user.validate();  
         await user.save();
         return res.status(201).send({
             message: "User Registered Successfully",

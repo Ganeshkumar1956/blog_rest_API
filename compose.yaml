@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  db:
+    image: blogapi
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - blognetwork
+    volumes:
+      - blogymongo:/data/db
+
+  app:
+    image: blogapi
+    container_name: blogyapi
+    depends_on:
+      - db
+    ports:
+      - "4000:3000"
+    networks:
+      - blognetwork
+    environment:
+      - PORT=3000
+      - DBNAME=blogy
+      - DBURI=mongodb://db:27017/blogy?directConnection=true
+      - JWT_ACCESSTOKEN_SECRET=JWT-ACCESSTOKEN-SECRET
+      - JWT_REFRESHTOKEN_SECRET=JWT-REFRESHTOKEN-SECRET
+
+networks:
+  blognetwork:
+    driver: bridge
+    name: blognetwork
+
+volumes:
+  blogymongo:
+    driver: local
+    name: blogymongo
+

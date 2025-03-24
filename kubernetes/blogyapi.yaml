@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blogy-api
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blogy-api
+  template:
+    metadata:
+      labels:
+        app: blogy-api
+    spec:
+      containers:
+      - name: blogy-api
+        image: ganeshkumargk/blogyapi:v1.0
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 250m
+            memory: 1Gi
+          limits:
+            cpu: 250m
+            memory: 1Gi
+        env:
+        - name: DBURI
+          value: "mongodb://mongodb-service.default.svc.cluster.local:27017/?replicaSet=rs0&readPreference=secondaryPreferred"
+        - name: DBNAME
+          value: "blogy"
+        - name: PORT
+          value: "3000"
+        - name: JWT_ACCESSTOKEN_SECRET
+          value: "JWT-ACCESSTOKEN-SECRET"
+        - name: JWT_REFRESHTOKEN_SECRET
+          value: "JWT-REFRESHTOKEN-SECRET"
+

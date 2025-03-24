@@ -23,8 +23,8 @@ export const createBlog=async(req,res)=>{
             })
         }
         newBlog.countTime();
-        const result=await uploadToS3(req.files.thumbnail,process.env.AWS_BUCKET,'thumbnail');
-        newBlog.thumbnail=result.Key;
+        //const result=await uploadToS3(req.files.thumbnail,process.env.AWS_BUCKET,'thumbnail');
+        //newBlog.thumbnail=result.Key;
         await newBlog.save();
 
         return res.status(201).send({
